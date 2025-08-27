@@ -1,0 +1,41 @@
+b64-builtin - base64 encode/decode for bash
+
+Useful in cases where you need to handle a lot of base64-encoded data and find that repeatedly
+spawning the base64 utility is taking too much time.
+
+Make sure you have bash builtin support installed, i.e. via debian "apt install bash-builtins".
+
+Run "make" to create file "b64-builtin".
+
+To use, run the following bash command:
+
+    enable -f /path/to/b64-builtin b64
+
+"help b64" will then show the usage:
+
+    b64: b64 [-de] [file]
+        Base64 encode/decode the given file, or standard input, to standard output.
+
+        Options:
+          -d       decode base64 text to binary
+          -e       encode binary to base64 text (default)
+
+        Encoded base64 is output as a single line without terminating CR. Unexpected characters
+        encountered during decode are ignored.
+
+        Exit Status:
+        Returns success unless an invalid option or filename is given.
+
+To test:
+
+    $ md5sum /usr/share/dict/words
+    16de2454dee65e9ceed77f9c1cd8a15e /usr/share/dict/words
+
+    b64 /usr/share/dict/words | b64 -d | md5sum
+    16de2454dee65e9ceed77f9c1cd8a15e -
+
+    b64 /usr/share/dict/words | base64 -d | md5sum
+    16de2454dee65e9ceed77f9c1cd8a15e -
+
+    base64 /usr/share/dict/words | b64 -d | md5sum
+    16de2454dee65e9ceed77f9c1cd8a15e -
